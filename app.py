@@ -1,18 +1,20 @@
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, WebRtcMode
 
-# 1. ऐप का डिज़ाइन
-st.set_page_config(page_title="APN Calling", page_icon="📞")
 st.title("APN: Secure Web Call 📞")
-st.write("अपने दोस्तों से सीधा ब्राउज़र के ज़रिए एन्क्रिप्टेड बात करें!")
 
-# 2. WebRTC की सेटिंग्स (Google का फ्री सर्वर जो फोन्स को ढूंढेगा)
-RTC_CONFIGURATION = {
-    "iceServers": [
-        {"urls": ["stun:stun.l.google.com:19302"]} # यह इंटरनेट पर फोन का रास्ता खोजता है
-    ]
-}
+# नाम दर्ज करने का बॉक्स
+user_name = st.text_input("अपना नाम दर्ज करें:")
+friend_name = st.text_input("किसे कॉल करना है?")
 
+if user_name and friend_name:
+    st.success(f"नमस्ते {user_name}! {friend_name} से जुड़ने के लिए START दबाएं।")
+    
+    webrtc_streamer(
+        key="apn-audio-call",
+        mode=WebRtcMode.SENDRECV,
+        media_stream_constraints={"video": False, "audio": True},
+    )
 # 3. कॉलिंग का इंटरफेस
 st.markdown("### कॉल शुरू करने के लिए 'START' दबाएं")
 
